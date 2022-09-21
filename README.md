@@ -1,1 +1,1 @@
-# ESP8266-TelegramBot-Servo
+# ESP-32-8266-TelegramBot-Servo
