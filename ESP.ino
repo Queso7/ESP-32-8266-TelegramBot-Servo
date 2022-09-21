@@ -2,23 +2,23 @@
 #include <WiFi.h>
 #else
  #include <ESP8266WiFi.h>
- #endif
- #include<WiFiClientSecure.h>
+#endif
+#include<WiFiClientSecure.h>
 #include <UniversalTelegramBot.h> 
  #include <ArduinoJson.h>
  #include <Servo.h>
  Servo myservo;
- const char* ssid = "quiero chettos";
- const char* password= "churro12";
- #define BOTtoken "5625150420:AAFO-2WLIXn9Vg2O60ZbiDWXgwqip2_aoqY"
- #define CHAT_ID "1768307042"
+ const char* ssid = "";
+ const char* password= "";
+ #define BOTtoken "XXXXXXXXXXXXXXXXXXXXXXXXXXXXX"
+ #define CHAT_ID "XXXXXXXXXXXXXXXXXX"
 #ifdef ESP8266
   X509List cert(TELEGRAM_CERTIFICATE_ROOT);
 #endif
-WiFiClientSecure client;
-UniversalTelegramBot bot(BOTtoken, client);
-int botRequestDelay = 100;
-unsigned long lastTimeBotRan;
+ WiFiClientSecure client;
+ UniversalTelegramBot bot(BOTtoken, client);
+ int botRequestDelay = 100;
+ unsigned long lastTimeBotRan;
 void handleNewMessages(int numNewMessages){
  
   Serial.println("handleNewMessages");
@@ -36,7 +36,7 @@ void handleNewMessages(int numNewMessages){
 
     String from_name = bot.messages[i].from_name;
 
-    if (text == "/start" or text == "7iniciar") {
+    if (text == "/start") {
       String welcome = "Bienvenido, " + from_name + ".\n";
       welcome += "Utiliza los comandos C:.\n\n";
       welcome += "/Encender \n";
@@ -48,21 +48,20 @@ void handleNewMessages(int numNewMessages){
 
   
     if (text == "/Encender"){
-      bot.sendMessage(chat_id, "listo,cruck","");
+      bot.sendMessage(chat_id, "Encendido","");
       myservo.write(180);
       delay(5000);
       myservo.write(0);
     }
-    
     if (text == "/Apagar") {
-      bot.sendMessage(chat_id, "Valor = 0", "");
+      bot.sendMessage(chat_id, "Apagado", "");
       myservo.write(0);
       myservo.detach();
     }
   }
 }
 
-void setup() {
+void setup(){
   Serial.begin(115200);
   #ifdef ESP8266
     configTime(0, 0, "pool.ntp.org");
@@ -78,10 +77,8 @@ void setup() {
     Serial.println("Connecting to WiFi..");
   }
   Serial.println(WiFi.localIP());
-
 }
-
-void loop() {
+void loop(){
   if (millis() > lastTimeBotRan + botRequestDelay)  {
     int numNewMessages = bot.getUpdates(bot.last_message_received + 1);
     while(numNewMessages) {
